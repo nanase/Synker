@@ -40,7 +40,7 @@ namespace Synker
 
         public long LastEventProcessTick { get; }
 
-        public double AccualIntervalTime => (double)IntervalGapTick / Frequency;
+        public double IntervalGapTime => (double)IntervalGapTick / Frequency;
 
         public double LastEventProcessTime => (double)LastEventProcessTick / Frequency;
 
