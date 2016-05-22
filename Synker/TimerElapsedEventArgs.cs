@@ -2,7 +2,7 @@
 
 namespace Synker
 {
-    public class IntervalTickEventArgs : EventArgs
+    public class TimerElapsedEventArgs : EventArgs
     {
         #region -- Public Properties --
 
@@ -22,7 +22,7 @@ namespace Synker
 
         #region -- Constructors --
 
-        public IntervalTickEventArgs(
+        public TimerElapsedEventArgs(
             long frequency, long count, long intervalGapTick, long lastEventProcessTick)
         {
             Frequency = frequency;

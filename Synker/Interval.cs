@@ -52,7 +52,7 @@ namespace Synker
         /// <summary>
         /// 指定された間隔が経過し、イベントを発生させようとしたときに発生します。
         /// </summary>
-        public event EventHandler<IntervalTickEventArgs> Elapsed;
+        public event EventHandler<TimerElapsedEventArgs> Elapsed;
 
         #endregion
 
@@ -159,7 +159,7 @@ namespace Synker
 
                 var targetTick = oldTick + deltaTick + gapDelta;
 
-                var args = new IntervalTickEventArgs(frequency, TickCount, oldTick - nowTick, processTime);
+                var args = new TimerElapsedEventArgs(frequency, TickCount, oldTick - nowTick, processTime);
                 var beforeProcessTick = Stopwatch.GetTimestamp();
 
                 Elapsed?.Invoke(this, args);
