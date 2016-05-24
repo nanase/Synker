@@ -185,14 +185,17 @@ namespace Synker
 
                 var targetTick = oldTick + deltaTick + gapDelta;
 
-                var args = new TimerElapsedEventArgs(frequency, TickCount, oldTick - nowTick, processTime);
-                var beforeProcessTick = Stopwatch.GetTimestamp();
+                {
+                    var beforeProcessTick = Stopwatch.GetTimestamp();
 
-                Elapsed?.Invoke(this, args);
+                    Elapsed?.Invoke(
+                        this,
+                        new TimerElapsedEventArgs(frequency, TickCount, oldTick - nowTick, processTime));
 
-                nowTick = Stopwatch.GetTimestamp();
-                processTime = nowTick - beforeProcessTick;
-                
+                    nowTick = Stopwatch.GetTimestamp();
+                    processTime = nowTick - beforeProcessTick;
+                }
+
                 if (requestedStop)
                     break;
                 
