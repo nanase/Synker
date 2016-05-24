@@ -28,26 +28,54 @@ using System;
 
 namespace Synker
 {
+    /// <summary>
+    /// タイマが指定された間隔だけ経過してイベントが発生したときに使用される引数を格納します。
+    /// </summary>
     public class TimerElapsedEventArgs : EventArgs
     {
         #region -- Public Properties --
 
+        /// <summary>
+        /// タイマで使われていた高精度タイマの周波数を取得します。
+        /// </summary>
         public long Frequency { get; }
 
+        /// <summary>
+        /// このイベントが何回目に発生したかを表す数値を取得します。
+        /// </summary>
         public long Count { get; }
 
+        /// <summary>
+        /// 本来発生すべき時刻と、このイベントの発生時刻のずれを表すティック値を取得します。
+        /// </summary>
         public long IntervalGapTick { get; }
 
+        /// <summary>
+        /// 前回のイベントの処理時間を表すティック値を取得します。
+        /// </summary>
         public long LastEventProcessTick { get; }
 
+        /// <summary>
+        /// 本来発生すべき時刻と、このイベントの発生時刻のずれを表す秒数を取得します。
+        /// </summary>
         public double IntervalGapTime => (double)IntervalGapTick / Frequency;
 
+        /// <summary>
+        /// 前回のイベントの処理時間を表す秒数を取得します。
+        /// </summary>
         public double LastEventProcessTime => (double)LastEventProcessTick / Frequency;
 
         #endregion
 
         #region -- Constructors --
 
+        /// <summary>
+        /// 指定されたパラメータを使って新しい <see cref="TimerElapsedEventArgs"/> クラスのインスタンスを初期化します。
+        /// </summary>
+        /// <param name="frequency">タイマで使われていた高精度タイマの周波数。</param>
+        /// <param name="count">このイベントが何回目に発生したかを表す数値。</param>
+        /// <param name="intervalGapTick">本来発生すべき時刻と、このイベントの発生時刻のずれを表すティック値。</param>
+        /// <param name="lastEventProcessTick">前回のイベントの処理時間を表すティック値。</param>
         public TimerElapsedEventArgs(
             long frequency, long count, long intervalGapTick, long lastEventProcessTick)
         {
