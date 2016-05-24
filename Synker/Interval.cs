@@ -34,13 +34,15 @@ namespace Synker
     /// <summary>
     /// 一定の間隔でイベントを発生させるための機能を提供します。
     /// </summary>
-    public class Interval
+    public class Interval : IDisposable
     {
         #region -- Private Fields --
 
         private volatile bool requestedStop;
         private Task tickerTask;
         private int intervalMilliseconds = 10;
+        private bool disposed;
+
         #endregion
 
         #region -- Public Properties --
@@ -54,6 +56,9 @@ namespace Synker
             get { return intervalMilliseconds; }
             set
             {
+                if (disposed)
+                    throw new ObjectDisposedException(GetType().FullName);
+
                 if (value < 1)
                     throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -101,6 +106,9 @@ namespace Synker
         /// </summary>
         public void Start()
         {
+            if (disposed)
+                throw new ObjectDisposedException(GetType().FullName);
+
             if (Running)
                 return;
 
@@ -123,6 +131,9 @@ namespace Synker
         /// <param name="timeout">停止待機時間を表す <see cref="TimeSpan"/> 型のインスタンス。</param>
         public void Stop(TimeSpan timeout)
         {
+            if (disposed)
+                throw new ObjectDisposedException(GetType().FullName);
+
             if (!Running)
                 return;
 
@@ -138,6 +149,9 @@ namespace Synker
         /// </summary>
         public void Reset()
         {
+            if (disposed)
+                throw new ObjectDisposedException(GetType().FullName);
+
             TickCount = 0L;
             requestedStop = false;
         }
@@ -156,8 +170,40 @@ namespace Synker
         /// <param name="timeout">停止待機時間を表す <see cref="TimeSpan"/> 型のインスタンス。</param>
         public void Restart(TimeSpan timeout)
         {
+            if (disposed)
+                throw new ObjectDisposedException(GetType().FullName);
+
             Stop(timeout);
             Start();
+        }
+
+        /// <summary>
+        /// このオブジェクトで使用されているリソースを破棄します。
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        #endregion
+
+        #region -- Protected Methods --
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+            
+            Stop();
+
+            disposed = true;
+            
+            if (disposing)
+                GC.SuppressFinalize(this);
+        }
+
+        ~Interval()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -176,11 +222,11 @@ namespace Synker
             while (!requestedStop)
             {
                 TickCount++;
-                
+
                 var deltaTickDouble = intervalMilliseconds * 0.001 * frequency;
                 var deltaTick = (long)deltaTickDouble;
                 gap += deltaTickDouble - deltaTick;
-                var gapDelta = (long) gap;
+                var gapDelta = (long)gap;
                 gap -= gapDelta;
 
                 var targetTick = oldTick + deltaTick + gapDelta;
@@ -198,10 +244,10 @@ namespace Synker
 
                 if (requestedStop)
                     break;
-                
+
                 while (!requestedStop && Stopwatch.GetTimestamp() + milliFrequency < targetTick)
                     Thread.Sleep(1);
-                
+
                 oldTick = targetTick;
             }
         }
