@@ -25,6 +25,7 @@ SOFTWARE.
 */
 
 using System;
+using Synker.Resource;
 
 namespace Synker
 {
@@ -76,9 +77,19 @@ namespace Synker
         /// <param name="count">このイベントが何回目に発生したかを表す数値。</param>
         /// <param name="intervalGapTick">本来発生すべき時刻と、このイベントの発生時刻のずれを表すティック値。</param>
         /// <param name="lastEventProcessTick">前回のイベントの処理時間を表すティック値。</param>
+        /// <exception cref="ArgumentOutOfRangeException">パラメータのいずれかの値が有効な範囲内にないときに発生します。</exception>
         public TimerElapsedEventArgs(
             long frequency, long count, long intervalGapTick, long lastEventProcessTick)
         {
+            if (frequency < 1)
+                throw new ArgumentOutOfRangeException(nameof(frequency), frequency, Language.TimerElapsedEventArgs_ArgumentOutOfRange_0);
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count), count, Language.TimerElapsedEventArgs_ArgumentOutOfRange_0);
+
+            if (lastEventProcessTick < 0)
+                throw new ArgumentOutOfRangeException(nameof(lastEventProcessTick), lastEventProcessTick, Language.TimerElapsedEventArgs_ArgumentOutOfRange_0);
+
             Frequency = frequency;
             Count = count;
             IntervalGapTick = intervalGapTick;
