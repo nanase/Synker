@@ -28,6 +28,7 @@ using System;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
+using Synker.Resource;
 
 namespace Synker
 {
@@ -51,16 +52,17 @@ namespace Synker
         /// イベントを発生する間隔値をミリ秒で設定または取得します。
         /// 設定値は 1 ミリ秒以上の値でなくてはなりません。
         /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public int IntervalMilliseconds
         {
             get { return intervalMilliseconds; }
             set
             {
                 if (disposed)
-                    throw new ObjectDisposedException(GetType().FullName);
+                    throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
                 if (value < 1)
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), value, Language.Interval_ArgumentOutOfRange_1);
 
                 intervalMilliseconds = value;
             }
@@ -104,10 +106,11 @@ namespace Synker
         /// <summary>
         /// タイマを動作させ、イベントを発生できる状態にします。
         /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Start()
         {
             if (disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             if (Running)
                 return;
@@ -129,10 +132,11 @@ namespace Synker
         /// タイマを停止し、イベントの発生を止め、指定された時間だけ停止を待ちます。
         /// </summary>
         /// <param name="timeout">停止待機時間を表す <see cref="TimeSpan"/> 型のインスタンス。</param>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Stop(TimeSpan timeout)
         {
             if (disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             if (!Running)
                 return;
@@ -147,10 +151,11 @@ namespace Synker
         /// <summary>
         /// イベント発生カウントを初期化し、再び発生ができる状態にリセットします。
         /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Reset()
         {
             if (disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             TickCount = 0L;
             requestedStop = false;
@@ -168,10 +173,11 @@ namespace Synker
         /// 指定された時間だけ停止を待ち、タイマを再び開始します。
         /// </summary>
         /// <param name="timeout">停止待機時間を表す <see cref="TimeSpan"/> 型のインスタンス。</param>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Restart(TimeSpan timeout)
         {
             if (disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             Stop(timeout);
             Start();
