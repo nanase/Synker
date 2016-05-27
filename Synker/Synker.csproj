@@ -35,8 +35,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interval.cs" />
+    <Compile Include="Resource\Language.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resource\Language.ja.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.ja.resx</DependentUpon>
+    </Compile>
     <Compile Include="TimerElapsedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Language.ja.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.ja.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Language.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
