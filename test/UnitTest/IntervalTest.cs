@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Synker;
 
@@ -87,5 +88,24 @@ namespace UnitTest
             }
         }
 
+        [TestMethod]
+        public void IntervalMillisecondsTest()
+        {
+            using (var interval = new Interval())
+            {
+                interval.IntervalMilliseconds = 42;
+                Assert.AreEqual(42, interval.IntervalMilliseconds);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void IntervalMillisecondsError()
+        {
+            using (var interval = new Interval())
+            {
+                interval.IntervalMilliseconds = 0;
+            }
+        }
     }
 }
