@@ -42,7 +42,6 @@ namespace Synker
         private volatile bool requestedStop;
         private Task tickerTask;
         private int intervalMilliseconds = 10;
-        private bool disposed;
 
         #endregion
 
@@ -58,7 +57,7 @@ namespace Synker
             get { return intervalMilliseconds; }
             set
             {
-                if (disposed)
+                if (IsDisposed)
                     throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
                 if (value < 1)
@@ -77,6 +76,11 @@ namespace Synker
         /// イベントが発生した回数を取得します。
         /// </summary>
         public long TickCount { get; private set; }
+
+        /// <summary>
+        /// オブジェクトが破棄されたかを表す真偽値を取得します。
+        /// </summary>
+        public bool IsDisposed { get; private set; }
 
         #endregion
 
@@ -109,7 +113,7 @@ namespace Synker
         /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Start()
         {
-            if (disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             if (Running)
@@ -135,7 +139,7 @@ namespace Synker
         /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Stop(TimeSpan timeout)
         {
-            if (disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             if (!Running)
@@ -154,7 +158,7 @@ namespace Synker
         /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Reset()
         {
-            if (disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             TickCount = 0L;
@@ -176,7 +180,7 @@ namespace Synker
         /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Restart(TimeSpan timeout)
         {
-            if (disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().FullName, Language.Interval_ObjectDisposed);
 
             Stop(timeout);
@@ -197,11 +201,11 @@ namespace Synker
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed) return;
+            if (IsDisposed) return;
             
             Stop();
 
-            disposed = true;
+            IsDisposed = true;
             
             if (disposing)
                 GC.SuppressFinalize(this);
