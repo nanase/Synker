@@ -54,7 +54,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void ElapsedTest()
+        public void ElapsedTest1()
         {
             using (var interval = new Interval())
             {
@@ -89,6 +89,23 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void ElapsedTest2()
+        {
+            using (var interval = new Interval() { IntervalMilliseconds = 1 })
+            {
+                interval.Elapsed += (sender, args) => Thread.Sleep(10);
+
+                interval.Start();
+
+                Thread.Sleep(5);
+
+                interval.Stop();
+
+                Assert.IsFalse(interval.Running);
+            }
+        }
+
+        [TestMethod]
         public void IntervalMillisecondsTest()
         {
             using (var interval = new Interval())
@@ -106,6 +123,54 @@ namespace UnitTest
             {
                 interval.IntervalMilliseconds = 0;
             }
+        }
+
+        [TestMethod]
+        public void StartTestDuplex()
+        {
+            var interval = new Interval();
+
+            interval.Start();
+            Assert.IsTrue(interval.Running);
+
+            interval.Start();
+            Assert.IsTrue(interval.Running);
+
+            interval.Stop();
+            Assert.IsFalse(interval.Running);
+
+            interval.Stop();
+            Assert.IsFalse(interval.Running);
+
+            interval.Dispose();
+            Assert.IsTrue(interval.IsDisposed);
+
+            interval.Dispose();
+            Assert.IsTrue(interval.IsDisposed);
+        }
+
+        [TestMethod]
+        public void FinalizeTest()
+        {
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                new Interval();
+            }
+
+            GC.WaitForPendingFinalizers();
+        }
+
+        [TestMethod]
+        public void DisposeErrorTest()
+        {
+            var interval = new Interval();
+            interval.Dispose();
+
+            ExceptionAssert.Expect(typeof (ObjectDisposedException), interval.Start);
+            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Stop);
+            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Restart);
+            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Reset);
+            ExceptionAssert.Expect(typeof(ObjectDisposedException), () => interval.IntervalMilliseconds = 10);
         }
     }
 }
