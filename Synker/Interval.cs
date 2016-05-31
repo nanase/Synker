@@ -197,16 +197,38 @@ namespace Synker
 
         #endregion
 
+        #region -- Public Static Methods --
+
+        /// <summary>
+        /// 間隔と呼び出されるメソッドを指定して新しい <see cref="Interval"/> クラスのインスタンスを初期化し、
+        /// タイマを開始させます。
+        /// </summary>
+        /// <param name="milliseconds">イベントを発生するミリ秒単位の間隔値。</param>
+        /// <param name="callback">呼び出されるメソッド。</param>
+        /// <returns></returns>
+        public static Interval StartNew(int milliseconds, Action<object, TimerElapsedEventArgs> callback)
+        {
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            var interval = new Interval { IntervalMilliseconds = milliseconds };
+            interval.Elapsed += new EventHandler<TimerElapsedEventArgs>(callback);
+
+            return interval;
+        }
+
+        #endregion
+
         #region -- Protected Methods --
 
         protected virtual void Dispose(bool disposing)
         {
             if (IsDisposed) return;
-            
+
             Stop();
 
             IsDisposed = true;
-            
+
             if (disposing)
                 GC.SuppressFinalize(this);
         }
