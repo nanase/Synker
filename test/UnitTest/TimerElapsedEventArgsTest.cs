@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Synker;
 
@@ -9,9 +9,9 @@ namespace UnitTest
     public class TimerElapsedEventArgsTest
     {
         [TestMethod]
+        [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
         public void CtorError()
         {
-            // ReSharper disable once ObjectCreationAsStatement
             ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(0, 0, 0, 0));
             ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(1, -1, 0, 0));
             ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(1, 0, 0, -1));
