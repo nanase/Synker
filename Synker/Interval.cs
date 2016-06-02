@@ -213,6 +213,7 @@ namespace Synker
 
             var interval = new Interval { IntervalMilliseconds = milliseconds };
             interval.Elapsed += new EventHandler<TimerElapsedEventArgs>(callback);
+            interval.Start();
 
             return interval;
         }
