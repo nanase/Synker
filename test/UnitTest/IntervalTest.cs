@@ -172,5 +172,21 @@ namespace UnitTest
             ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Reset);
             ExceptionAssert.Expect(typeof(ObjectDisposedException), () => interval.IntervalMilliseconds = 10);
         }
+
+        [TestMethod]
+        public void StartNewTest()
+        {
+            var processed = false;
+            using (var interval = Interval.StartNew(10, (s, e) => processed = true))
+            {
+                Assert.IsNotNull(interval);
+                Assert.IsTrue(interval.Running);
+                Thread.Sleep(20);
+
+                interval.Stop();
+                Assert.IsFalse(interval.Running);
+                Assert.IsTrue(processed);
+            }
+        }
     }
 }
