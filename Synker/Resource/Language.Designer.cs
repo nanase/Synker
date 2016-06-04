@@ -79,6 +79,33 @@ namespace Synker.Resource {
         }
         
         /// <summary>
+        ///   This value must be less than or equal to 1. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Timeout_ArgumentOutOfRange_1 {
+            get {
+                return ResourceManager.GetString("Timeout_ArgumentOutOfRange_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This value is not supported. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Timeout_ArgumentOutOfRange_2 {
+            get {
+                return ResourceManager.GetString("Timeout_ArgumentOutOfRange_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This object has been disposed. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Timeout_ObjectDisposed {
+            get {
+                return ResourceManager.GetString("Timeout_ObjectDisposed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This value must be less than or equal to 0. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TimerElapsedEventArgs_ArgumentOutOfRange_0 {

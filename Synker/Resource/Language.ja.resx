@@ -123,6 +123,15 @@
   <data name="Interval_ObjectDisposed" xml:space="preserve">
     <value>このオブジェクトはすでに破棄されています。</value>
   </data>
+  <data name="Timeout_ArgumentOutOfRange_1" xml:space="preserve">
+    <value>この値は 1 以上である必要があります。</value>
+  </data>
+  <data name="Timeout_ArgumentOutOfRange_2" xml:space="preserve">
+    <value>この値はサポートされていません。</value>
+  </data>
+  <data name="Timeout_ObjectDisposed" xml:space="preserve">
+    <value>このオブジェクトはすでに破棄されています。</value>
+  </data>
   <data name="TimerElapsedEventArgs_ArgumentOutOfRange_0" xml:space="preserve">
     <value>この値は 0 より大きな値である必要があります。</value>
   </data>
