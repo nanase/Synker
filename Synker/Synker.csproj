@@ -45,6 +45,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Language.ja.resx</DependentUpon>
     </Compile>
+    <Compile Include="Timeout.cs" />
+    <Compile Include="TimedOutEventArgs.cs" />
     <Compile Include="TimerElapsedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
