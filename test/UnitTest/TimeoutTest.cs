@@ -181,6 +181,28 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void ModeTest()
+        {
+            using (var timeout = new Synker.Timeout())
+            {
+                Assert.AreEqual(TimeoutMode.Nonblocking, timeout.Mode);
+
+                timeout.Mode = TimeoutMode.Blocking;
+                Assert.AreEqual(TimeoutMode.Blocking, timeout.Mode);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void ModeError()
+        {
+            using (var timeout = new Synker.Timeout())
+            {
+                timeout.Mode = (TimeoutMode)int.MaxValue;
+            }
+        }
+
+        [TestMethod]
         public void StartNewTest()
         {
             var processed = false;
