@@ -188,5 +188,12 @@ namespace UnitTest
                 Assert.IsTrue(processed);
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StartNewError()
+        {
+            Interval.StartNew(10, null);
+        }
     }
 }
