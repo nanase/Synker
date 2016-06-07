@@ -90,7 +90,7 @@ namespace UnitTest
             {
                 var timedout = false;
 
-                timeout.Mode = TimeoutMode.Blocking;;
+                timeout.Mode = TimeoutMode.Blocking;
                 timeout.TimedOut += (sender, args) =>
                 {
                     Assert.IsNotNull(sender);
