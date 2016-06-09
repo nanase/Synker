@@ -104,7 +104,7 @@ namespace Synker
             if (Running)
                 return;
             
-            targetTick = (long)Math.Round(TimeoutMilliseconds * 0.001 * Stopwatch.Frequency);
+            targetTick = Stopwatch.GetTimestamp() + (long)Math.Round(TimeoutMilliseconds * 0.001 * Stopwatch.Frequency);
             Running = true;
             requestedStop = false;
 
