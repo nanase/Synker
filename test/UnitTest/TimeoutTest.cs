@@ -217,5 +217,12 @@ namespace UnitTest
                 Assert.IsTrue(processed);
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StartNewError()
+        {
+            Synker.Timeout.StartNew(10, null);
+        }
     }
 }
