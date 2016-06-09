@@ -78,6 +78,8 @@ namespace UnitTest
                 while (timeout.Running)
                     Thread.Sleep(1);
 
+                Thread.Sleep(10);
+
                 Assert.IsTrue(timedout);
                 Assert.IsFalse(timeout.Running);
             }
