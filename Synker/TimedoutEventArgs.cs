@@ -47,7 +47,7 @@ namespace Synker
             long frequency, long intervalGapTick)
         {
             if (frequency < 1)
-                throw new ArgumentOutOfRangeException(nameof(frequency), frequency, "");
+                throw new ArgumentOutOfRangeException(nameof(frequency), frequency, Language.TimedOutEventArgs_ArgumentOutOfRange_0);
 
             Frequency = frequency;
             IntervalGapTick = intervalGapTick;
