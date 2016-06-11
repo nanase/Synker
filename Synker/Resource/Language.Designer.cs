@@ -79,6 +79,15 @@ namespace Synker.Resource {
         }
         
         /// <summary>
+        ///   This value must be less than or equal to 0. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TimedOutEventArgs_ArgumentOutOfRange_0 {
+            get {
+                return ResourceManager.GetString("TimedOutEventArgs_ArgumentOutOfRange_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This value must be less than or equal to 1. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Timeout_ArgumentOutOfRange_1 {

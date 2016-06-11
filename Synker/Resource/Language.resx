@@ -123,6 +123,9 @@
   <data name="Interval_ObjectDisposed" xml:space="preserve">
     <value>This object has been disposed.</value>
   </data>
+  <data name="TimedOutEventArgs_ArgumentOutOfRange_0" xml:space="preserve">
+    <value>This value must be less than or equal to 0.</value>
+  </data>
   <data name="Timeout_ArgumentOutOfRange_1" xml:space="preserve">
     <value>This value must be less than or equal to 1.</value>
   </data>
