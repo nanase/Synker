@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="TimeoutTest.cs" />
+    <Compile Include="TimedOutEventArgsTest.cs" />
     <Compile Include="TimerElapsedEventArgsTest.cs" />
     <Compile Include="IntervalTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
