@@ -32,6 +32,9 @@ using Synker.Resource;
 
 namespace Synker
 {
+    /// <summary>
+    /// 一定の時間でイベントを発生させるための機能を提供します。
+    /// </summary>
     public class Timeout : IDisposable
     {
         #region -- Private Fields --
@@ -46,6 +49,11 @@ namespace Synker
 
         #region -- Public Properties --
 
+        /// <summary>
+        /// イベントを発生するタイムアウト値をミリ秒で設定または取得します。
+        /// 設定値は 1 ミリ秒以上の値でなくてはなりません。
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public int TimeoutMilliseconds
         {
             get { return timeoutMilliseconds; }
@@ -61,6 +69,10 @@ namespace Synker
             }
         }
 
+        /// <summary>
+        /// タイムアウトのモードを表す <see cref="TimeoutMode"/> 列挙体の値を取得または設定します。
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">与えられた引数が有効な <see cref="TimeoutMode"/> 列挙体の値でないときに発生します。</exception>
         public TimeoutMode Mode
         {
             get { return mode; }
@@ -73,20 +85,32 @@ namespace Synker
             }
         }
 
+        /// <summary>
+        /// オブジェクトが破棄されたかを表す真偽値を取得します。
+        /// </summary>
         public bool IsDisposed { get; private set; }
 
+        /// <summary>
+        /// タイマが動作しているかを表す真偽値を取得します。
+        /// </summary>
         public bool Running { get; private set; }
 
         #endregion
 
         #region -- Public Events --
 
-        public event EventHandler<TimedOutEventArgs> TimedOut; 
+        /// <summary>
+        /// 指定された時間が経過し、イベントを発生させようとしたときに発生します。
+        /// </summary>
+        public event EventHandler<TimedOutEventArgs> TimedOut;
 
         #endregion
 
         #region -- Constructors --
 
+        /// <summary>
+        /// パラメータを指定せずに新しい <see cref="Timeout"/> クラスのインスタンスを指定します。
+        /// </summary>
         public Timeout()
         {
             this.Reset();
@@ -96,6 +120,10 @@ namespace Synker
 
         #region -- Public Methods --
 
+        /// <summary>
+        /// タイマを動作させ、イベントを発生できる状態にします。
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Start()
         {
             if (IsDisposed)
@@ -114,6 +142,9 @@ namespace Synker
                 tickerTask = Task.Factory.StartNew(Tick);
         }
 
+        /// <summary>
+        /// タイマを停止し、イベントの発生を止めます。
+        /// </summary>
         public void Stop()
         {
             if (IsDisposed)
@@ -129,6 +160,10 @@ namespace Synker
             Running = false;
         }
 
+        /// <summary>
+        /// イベント発生ティックを初期化し、再び発生ができる状態にリセットします。
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">オブジェクトが破棄された後に呼び出されると発生します。</exception>
         public void Reset()
         {
             if (IsDisposed)
@@ -138,6 +173,9 @@ namespace Synker
             targetTick = 0L;
         }
 
+        /// <summary>
+        /// タイマを停止し、再び開始します。
+        /// </summary>
         public void Restart()
         {
             Stop();
@@ -157,6 +195,13 @@ namespace Synker
 
         #region -- Public Static Methods --
 
+        /// <summary>
+        /// 時間と呼び出されるメソッドを指定して新しい <see cref="Timeout"/> クラスのインスタンスを初期化し、
+        /// タイマを開始させます。
+        /// </summary>
+        /// <param name="milliseconds">イベントを発生するミリ秒単位のタイムアウト値。</param>
+        /// <param name="callback">呼び出されるメソッド。</param>
+        /// <returns>新しい <see cref="Timeout"/> クラスのインスタンス。</returns>
         public static Timeout StartNew(int milliseconds, Action<object, TimedOutEventArgs> callback)
         {
             if (callback == null)
@@ -219,9 +264,21 @@ namespace Synker
         #endregion
     }
 
+    /// <summary>
+    /// <see cref="Timeout"/> クラスの動作モードを定義します。
+    /// </summary>
     public enum TimeoutMode
     {
+        /// <summary>
+        /// ノンブロッキングモード。
+        /// タイマの開始から停止まで別スレッドでカウントが行われ、コールバックは非同期で行われます。
+        /// </summary>
         Nonblocking,
+
+        /// <summary>
+        /// ブロッキングモード。
+        /// タイマの開始から停止まで呼び出し元と同じスレッドで行われます。
+        /// </summary>
         Blocking
     }
 }
