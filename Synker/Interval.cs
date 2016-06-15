@@ -96,7 +96,7 @@ namespace Synker
         #region -- Constructors --
 
         /// <summary>
-        /// パラメータを指定せずに新しい Interval クラスのインスタンスを指定します。
+        /// パラメータを指定せずに新しい <see cref="Interval"/> クラスのインスタンスを指定します。
         /// </summary>
         public Interval()
         {
@@ -205,7 +205,7 @@ namespace Synker
         /// </summary>
         /// <param name="milliseconds">イベントを発生するミリ秒単位の間隔値。</param>
         /// <param name="callback">呼び出されるメソッド。</param>
-        /// <returns></returns>
+        /// <returns>新しい <see cref="Interval"/> クラスのインスタンス。</returns>
         public static Interval StartNew(int milliseconds, Action<object, TimerElapsedEventArgs> callback)
         {
             if (callback == null)
