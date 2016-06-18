@@ -42,6 +42,7 @@ namespace Synker
         private volatile bool requestedStop;
         private Task tickerTask;
         private int intervalMilliseconds = 10;
+        private BlockingMode mode = BlockingMode.Nonblocking;
 
         #endregion
 
@@ -76,6 +77,22 @@ namespace Synker
         /// イベントが発生した回数を取得します。
         /// </summary>
         public long TickCount { get; private set; }
+
+        /// <summary>
+        /// ブロッキングモードを表す <see cref="BlockingMode"/> 列挙体の値を取得または設定します。
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">与えられた引数が有効な <see cref="BlockingMode"/> 列挙体の値でないときに発生します。</exception>
+        public BlockingMode Mode
+        {
+            get { return mode; }
+            set
+            {
+                if (!Enum.IsDefined(typeof(BlockingMode), value))
+                    throw new ArgumentOutOfRangeException(nameof(value), value, Language.Timeout_ArgumentOutOfRange_2);
+
+                mode = value;
+            }
+        }
 
         /// <summary>
         /// オブジェクトが破棄されたかを表す真偽値を取得します。
@@ -120,8 +137,12 @@ namespace Synker
                 return;
 
             requestedStop = false;
-            tickerTask = Task.Factory.StartNew(Tick);
             Running = true;
+            
+            if (mode == BlockingMode.Blocking)
+                Tick();
+            else
+                tickerTask = Task.Factory.StartNew(Tick);
         }
 
         /// <summary>
@@ -146,8 +167,8 @@ namespace Synker
                 return;
 
             requestedStop = true;
-            tickerTask.Wait(timeout);
-            tickerTask.Dispose();
+            tickerTask?.Wait(timeout);
+            tickerTask?.Dispose();
             tickerTask = null;
             Running = false;
         }
