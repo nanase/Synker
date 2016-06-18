@@ -92,7 +92,7 @@ namespace UnitTest
             {
                 var timedout = false;
 
-                timeout.Mode = TimeoutMode.Blocking;
+                timeout.Mode = BlockingMode.Blocking;
                 timeout.TimedOut += (sender, args) =>
                 {
                     Assert.IsNotNull(sender);
@@ -187,10 +187,10 @@ namespace UnitTest
         {
             using (var timeout = new Synker.Timeout())
             {
-                Assert.AreEqual(TimeoutMode.Nonblocking, timeout.Mode);
+                Assert.AreEqual(BlockingMode.Nonblocking, timeout.Mode);
 
-                timeout.Mode = TimeoutMode.Blocking;
-                Assert.AreEqual(TimeoutMode.Blocking, timeout.Mode);
+                timeout.Mode = BlockingMode.Blocking;
+                Assert.AreEqual(BlockingMode.Blocking, timeout.Mode);
             }
         }
 
@@ -200,7 +200,7 @@ namespace UnitTest
         {
             using (var timeout = new Synker.Timeout())
             {
-                timeout.Mode = (TimeoutMode)int.MaxValue;
+                timeout.Mode = (BlockingMode)int.MaxValue;
             }
         }
 

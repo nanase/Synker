@@ -42,7 +42,7 @@ namespace Synker
         private volatile bool requestedStop;
         private Task tickerTask;
         private int timeoutMilliseconds = 10;
-        private TimeoutMode mode = TimeoutMode.Nonblocking;
+        private BlockingMode mode = BlockingMode.Nonblocking;
         private long targetTick;
 
         #endregion
@@ -70,15 +70,15 @@ namespace Synker
         }
 
         /// <summary>
-        /// タイムアウトのモードを表す <see cref="TimeoutMode"/> 列挙体の値を取得または設定します。
+        /// ブロッキングモードを表す <see cref="BlockingMode"/> 列挙体の値を取得または設定します。
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">与えられた引数が有効な <see cref="TimeoutMode"/> 列挙体の値でないときに発生します。</exception>
-        public TimeoutMode Mode
+        /// <exception cref="ArgumentOutOfRangeException">与えられた引数が有効な <see cref="BlockingMode"/> 列挙体の値でないときに発生します。</exception>
+        public BlockingMode Mode
         {
             get { return mode; }
             set
             {
-                if (!Enum.IsDefined(typeof(TimeoutMode), value))
+                if (!Enum.IsDefined(typeof(BlockingMode), value))
                     throw new ArgumentOutOfRangeException(nameof(value), value, Language.Timeout_ArgumentOutOfRange_2);
 
                 mode = value;
@@ -136,7 +136,7 @@ namespace Synker
             Running = true;
             requestedStop = false;
 
-            if (mode == TimeoutMode.Blocking)
+            if (mode == BlockingMode.Blocking)
                 Tick();
             else
                 tickerTask = Task.Factory.StartNew(Tick);
@@ -264,21 +264,5 @@ namespace Synker
         #endregion
     }
 
-    /// <summary>
-    /// <see cref="Timeout"/> クラスの動作モードを定義します。
-    /// </summary>
-    public enum TimeoutMode
-    {
-        /// <summary>
-        /// ノンブロッキングモード。
-        /// タイマの開始から停止まで別スレッドでカウントが行われ、コールバックは非同期で行われます。
-        /// </summary>
-        Nonblocking,
-
-        /// <summary>
-        /// ブロッキングモード。
-        /// タイマの開始から停止まで呼び出し元と同じスレッドで行われます。
-        /// </summary>
-        Blocking
-    }
+    
 }
