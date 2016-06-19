@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Synker;
 
 namespace UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class TimeoutTest
     {
-        [TestMethod]
+        [Test]
         public void StartTest()
         {
             using (var timeout = new Synker.Timeout())
@@ -26,7 +26,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RestartTest()
         {
             using (var timeout = new Synker.Timeout())
@@ -52,7 +52,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TimedOutTest1()
         {
             using (var timeout = new Synker.Timeout())
@@ -85,7 +85,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TimedOutTest2()
         {
             using (var timeout = new Synker.Timeout())
@@ -114,7 +114,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IntervalMillisecondsTest()
         {
             using (var timeout = new Synker.Timeout())
@@ -124,17 +124,16 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void IntervalMillisecondsError()
         {
             using (var timeout = new Synker.Timeout())
             {
-                timeout.TimeoutMilliseconds = 0;
+                Assert.Throws<ArgumentOutOfRangeException>(() => timeout.TimeoutMilliseconds = 0);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void StartTestDuplex()
         {
             var timeout = new Synker.Timeout();
@@ -158,7 +157,7 @@ namespace UnitTest
             Assert.IsTrue(timeout.IsDisposed);
         }
 
-        [TestMethod]
+        [Test]
         public void FinalizeTest()
         {
             {
@@ -169,20 +168,20 @@ namespace UnitTest
             GC.WaitForPendingFinalizers();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeErrorTest()
         {
             var timeout = new Synker.Timeout();
             timeout.Dispose();
 
-            ExceptionAssert.Expect(typeof (ObjectDisposedException), timeout.Start);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), timeout.Stop);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), timeout.Restart);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), timeout.Reset);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), () => timeout.TimeoutMilliseconds = 10);
+            Assert.Throws<ObjectDisposedException>(timeout.Start);
+            Assert.Throws<ObjectDisposedException>(timeout.Stop);
+            Assert.Throws<ObjectDisposedException>(timeout.Restart);
+            Assert.Throws<ObjectDisposedException>(timeout.Reset);
+            Assert.Throws<ObjectDisposedException>(() => timeout.TimeoutMilliseconds = 10);
         }
 
-        [TestMethod]
+        [Test]
         public void ModeTest()
         {
             using (var timeout = new Synker.Timeout())
@@ -194,17 +193,16 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void ModeError()
         {
             using (var timeout = new Synker.Timeout())
             {
-                timeout.Mode = (BlockingMode)int.MaxValue;
+                Assert.Throws<ArgumentOutOfRangeException>(() => timeout.Mode = (BlockingMode)int.MaxValue);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void StartNewTest()
         {
             var processed = false;
@@ -220,11 +218,10 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void StartNewError()
         {
-            Synker.Timeout.StartNew(10, null);
+            Assert.Throws<ArgumentNullException>(() => Synker.Timeout.StartNew(10, null));
         }
     }
 }

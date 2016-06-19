@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Synker;
 
 namespace UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class TimerElapsedEventArgsTest
     {
-        [TestMethod]
+        [Test]
         [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
         public void CtorError()
         {
-            ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(0, 0, 0, 0));
-            ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(1, -1, 0, 0));
-            ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimerElapsedEventArgs(1, 0, 0, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(0, 0, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(1, -1, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(1, 0, 0, -1));
         }
 
-        [TestMethod]
+        [Test]
         public void IntervalGapTest()
         {
             var args = new TimerElapsedEventArgs(1, 0, 0, 0);
@@ -25,7 +25,7 @@ namespace UnitTest
             Assert.AreEqual(0.0, args.IntervalGapTime);
         }
 
-        [TestMethod]
+        [Test]
         public void LastEventProcessTest()
         {
             var args = new TimerElapsedEventArgs(1, 0, 0, 0);

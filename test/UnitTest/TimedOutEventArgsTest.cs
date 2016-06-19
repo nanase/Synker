@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Synker;
 
 namespace UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class TimedOutEventArgsTest
     {
-        [TestMethod]
+        [Test]
         [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
         public void CtorError()
         {
-            ExceptionAssert.Expect(typeof(ArgumentOutOfRangeException), () => new TimedOutEventArgs(0, 42L));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimedOutEventArgs(0, 42L));
         }
 
-        [TestMethod]
+        [Test]
         public void IntervalGapTest()
         {
             var args = new TimedOutEventArgs(1, 42);

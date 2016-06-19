@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Synker;
 
 namespace UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class IntervalTest
     {
-        [TestMethod]
+        [Test]
         public void StartTest()
         {
             using (var interval = new Interval())
@@ -27,7 +27,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RestartTest()
         {
             using (var interval = new Interval())
@@ -53,7 +53,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ElapsedTest1()
         {
             using (var interval = new Interval())
@@ -88,7 +88,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ElapsedTest2()
         {
             using (var interval = new Interval() { IntervalMilliseconds = 1 })
@@ -105,7 +105,7 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IntervalMillisecondsTest()
         {
             using (var interval = new Interval())
@@ -115,17 +115,16 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void IntervalMillisecondsError()
         {
             using (var interval = new Interval())
             {
-                interval.IntervalMilliseconds = 0;
+                Assert.Throws<ArgumentOutOfRangeException>(() => interval.IntervalMilliseconds = 0);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void StartTestDuplex()
         {
             var interval = new Interval();
@@ -149,7 +148,7 @@ namespace UnitTest
             Assert.IsTrue(interval.IsDisposed);
         }
 
-        [TestMethod]
+        [Test]
         public void FinalizeTest()
         {
             {
@@ -160,20 +159,20 @@ namespace UnitTest
             GC.WaitForPendingFinalizers();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeErrorTest()
         {
             var interval = new Interval();
             interval.Dispose();
 
-            ExceptionAssert.Expect(typeof (ObjectDisposedException), interval.Start);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Stop);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Restart);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), interval.Reset);
-            ExceptionAssert.Expect(typeof(ObjectDisposedException), () => interval.IntervalMilliseconds = 10);
+            Assert.Throws<ObjectDisposedException>(interval.Start);
+            Assert.Throws<ObjectDisposedException>(interval.Stop);
+            Assert.Throws<ObjectDisposedException>(interval.Restart);
+            Assert.Throws<ObjectDisposedException>(interval.Reset);
+            Assert.Throws<ObjectDisposedException>(() => interval.IntervalMilliseconds = 10);
         }
 
-        [TestMethod]
+        [Test]
         public void StartNewTest()
         {
             var processed = false;
@@ -189,11 +188,10 @@ namespace UnitTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void StartNewError()
         {
-            Interval.StartNew(10, null);
+            Assert.Throws<ArgumentNullException>(() => Interval.StartNew(10, null));
         }
     }
 }
