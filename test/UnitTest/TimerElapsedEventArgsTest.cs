@@ -9,12 +9,13 @@ namespace UnitTest
     public class TimerElapsedEventArgsTest
     {
         [Test]
+        [TestCase(0L, 0L, 0L, 0L, TestName = "frequency が 0 以下の場合")]
+        [TestCase(1L, -1L, 0L, 0L, TestName = "count が負の場合")]
+        [TestCase(1L, 0L, 0L, -1L, TestName = "lastEventProcessTick が負の場合")]
         [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
-        public void CtorError()
+        public void CtorError(long frequency, long count, long intervalGapTick, long lastEventProcessTick)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(0, 0, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(1, -1, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(1, 0, 0, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimerElapsedEventArgs(frequency, count, intervalGapTick, lastEventProcessTick));
         }
 
         [Test]

@@ -9,10 +9,11 @@ namespace UnitTest
     public class TimedOutEventArgsTest
     {
         [Test]
+        [TestCase(0L, 42L, TestName = "frequency が 0 以下の場合")]
         [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
-        public void CtorError()
+        public void CtorError(long frequency, long intervalGapTick)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TimedOutEventArgs(0, 42L));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TimedOutEventArgs(frequency, intervalGapTick));
         }
 
         [Test]
