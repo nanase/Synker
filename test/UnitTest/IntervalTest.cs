@@ -15,7 +15,7 @@ namespace UnitTest
             {
                 Assert.IsFalse(interval.Running);
                 Assert.AreEqual(0, interval.TickCount);
-                Assert.IsTrue(interval.IntervalMilliseconds > 0);
+                Assert.Greater(interval.IntervalMilliseconds, 0);
 
                 interval.Start();
 
@@ -71,7 +71,7 @@ namespace UnitTest
 
                     Assert.IsNotNull(args);
                     Assert.AreEqual(1, args.Count);
-                    Assert.IsTrue(args.Frequency > 0);
+                    Assert.Greater(args.Frequency, 0);
 
                     elapsed = true;
                 };
@@ -84,7 +84,7 @@ namespace UnitTest
                 interval.Stop();
 
                 Assert.IsFalse(interval.Running);
-                Assert.IsTrue(interval.TickCount >= 1);
+                Assert.GreaterOrEqual(interval.TickCount, 1);
             }
         }
 

@@ -14,7 +14,7 @@ namespace UnitTest
             using (var timeout = new Synker.Timeout())
             {
                 Assert.IsFalse(timeout.Running);
-                Assert.IsTrue(timeout.TimeoutMilliseconds > 0);
+                Assert.Greater(timeout.TimeoutMilliseconds, 0);
 
                 timeout.Start();
 
@@ -70,7 +70,7 @@ namespace UnitTest
                     Assert.IsNotNull(args);
                     Assert.IsFalse(double.IsInfinity(args.IntervalGapTime));
                     Assert.IsFalse(double.IsNaN(args.IntervalGapTime));
-                    Assert.IsTrue(args.Frequency > 0);
+                    Assert.Greater(args.Frequency, 0);
                 };
 
                 timeout.Start();
@@ -102,7 +102,7 @@ namespace UnitTest
                     Assert.IsNotNull(args);
                     Assert.IsFalse(double.IsInfinity(args.IntervalGapTime));
                     Assert.IsFalse(double.IsNaN(args.IntervalGapTime));
-                    Assert.IsTrue(args.Frequency > 0);
+                    Assert.Greater(args.Frequency, 0);
 
                     timedout = true;
                 };
