@@ -115,12 +115,17 @@ namespace UnitTest
         }
 
         [Test]
-        public void IntervalMillisecondsTest()
+        [TestCase(1)]
+        [TestCase(5)]
+        [TestCase(10)]
+        [TestCase(50)]
+        [TestCase(100)]
+        public void IntervalMillisecondsTest(int intervalTime)
         {
             using (var timeout = new Synker.Timeout())
             {
-                timeout.TimeoutMilliseconds = 42;
-                Assert.AreEqual(42, timeout.TimeoutMilliseconds);
+                timeout.TimeoutMilliseconds = intervalTime;
+                Assert.AreEqual(intervalTime, timeout.TimeoutMilliseconds);
             }
         }
 
@@ -203,15 +208,20 @@ namespace UnitTest
         }
 
         [Test]
-        public void StartNewTest()
+        [TestCase(1, 5)]
+        [TestCase(5, 10)]
+        [TestCase(10, 20)]
+        [TestCase(50, 70)]
+        [TestCase(100, 120)]
+        public void StartNewTest(int timeoutTime, int sleep)
         {
             var processed = false;
-            using (var timeout = Synker.Timeout.StartNew(10, (s, e) => processed = true))
+            using (var timeout = Synker.Timeout.StartNew(timeoutTime, (s, e) => processed = true))
             {
                 Assert.IsNotNull(timeout);
                 Assert.IsTrue(timeout.Running);
 
-                Thread.Sleep(20);
+                Thread.Sleep(sleep);
 
                 Assert.IsFalse(timeout.Running);
                 Assert.IsTrue(processed);
