@@ -106,12 +106,17 @@ namespace UnitTest
         }
 
         [Test]
-        public void IntervalMillisecondsTest()
+        [TestCase(1)]
+        [TestCase(5)]
+        [TestCase(10)]
+        [TestCase(50)]
+        [TestCase(100)]
+        public void IntervalMillisecondsTest(int intervalTime)
         {
             using (var interval = new Interval())
             {
-                interval.IntervalMilliseconds = 42;
-                Assert.AreEqual(42, interval.IntervalMilliseconds);
+                interval.IntervalMilliseconds = intervalTime;
+                Assert.AreEqual(intervalTime, interval.IntervalMilliseconds);
             }
         }
 
@@ -173,14 +178,19 @@ namespace UnitTest
         }
 
         [Test]
-        public void StartNewTest()
+        [TestCase(1, 5)]
+        [TestCase(5, 10)]
+        [TestCase(10, 20)]
+        [TestCase(50, 70)]
+        [TestCase(100, 120)]
+        public void StartNewTest(int intervalTime, int sleep)
         {
             var processed = false;
-            using (var interval = Interval.StartNew(10, (s, e) => processed = true))
+            using (var interval = Interval.StartNew(intervalTime, (s, e) => processed = true))
             {
                 Assert.IsNotNull(interval);
                 Assert.IsTrue(interval.Running);
-                Thread.Sleep(20);
+                Thread.Sleep(sleep);
 
                 interval.Stop();
                 Assert.IsFalse(interval.Running);
